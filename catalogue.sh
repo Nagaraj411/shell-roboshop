@@ -42,4 +42,45 @@ VALIDATE $? "NodeJS module enable"
 dnf install nodejs -y
 VALIDATE $? "NodeJS installation"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+# check if the roboshop user is already created or not
+id roboshop
+if [ $? -ne 0 ]
+then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+    VALIDATE $? "Creating roboshop system user"
+else
+    echo -e "System user roboshop already created ... $Y SKIPPING $N"
+fi
+
+mkdir -p /app
+VALIDATE $? "app folder creation"
+
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+VALIDATE $? "catalogue zip file download"
+
+rm -rf /app/* #remove all the files in app folder
+cd /app       #go to app folder
+unzip /tmp/catalogue.zip
+VALIDATE $? "catalogue zip file extraction"
+
+npm install
+VALIDATE $? "npm install"
+
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+VALIDATE $? "catalogue service file copy"
+
+systemctl daemon-reload
+VALIDATE $? "systemd daemon reload"
+
+systemctl enable catalogue
+VALIDATE $? "catalogue service enable"
+
+systemctl start catalogue
+VALIDATE $? "catalogue service start"
+
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo 
+dnf install mongodb-mongosh -y
+VALIDATE $? "mongodb installation"
+
+mongosh --host MONGODB-SERVER-IPADDRESS </app/db/master-data.js
+VALIDATE $? "mongodb data import"
