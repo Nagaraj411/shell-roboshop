@@ -43,18 +43,16 @@ dnf install redis -y    &>>$LOG_FILE
 VALIDATE $? "Redis Installation"
 
 sed -i -e 's/127.0.0.0/0.0.0/g' -e '/protected-mode/c protected-mode no' /etc/redis/redis.conf
-VALIDATE $? "Redis config file updated"
+VALIDATE $? "Redis config file Edited & Updated"
 
 
 systemctl enable redis  &>>$LOG_FILE
 VALIDATE $? "Redis service enable"
 
 systemctl start redis   &>>$LOG_FILE
-VALIDATE @? "Redis service start"   
+VALIDATE @? "Redis service start"       
 
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
 echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
-
-
