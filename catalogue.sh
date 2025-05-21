@@ -67,7 +67,7 @@ npm install
 VALIDATE $? "npm install"
 
 cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
-VALIDATE $? "catalogue service file copy"
+VALIDATE $? "Copying catalogue service"
 
 systemctl daemon-reload
 VALIDATE $? "systemd daemon reload"
