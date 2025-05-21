@@ -83,9 +83,6 @@ cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh -y  &>>$LOG_FILE
 VALIDATE $? "mongodb installation"
 
-mongosh --host mongodb.devops84.shop </app/db/master-data.js    &>>$LOG_FILE
-VALIDATE $? "mongodb data import"
-
 mongosh --host mongodb.devops84.shop    &>>$LOG_FILE
 VALIDATE $? "mongodb connection"
 
