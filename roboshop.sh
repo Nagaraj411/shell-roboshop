@@ -2,7 +2,7 @@
 
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-009d0f9988cd2de9b" # replace with your SG ID
-INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
+INSTANCES=("mongodb" "redis" "frontend") #"mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch"
 ZONE_ID="Z05005862BAG0R5BQ5WUP" # replace with your ZONE ID
 DOMAIN_NAME="devops84.shop" # replace with your domain
 
