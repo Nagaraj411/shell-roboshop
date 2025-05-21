@@ -31,3 +31,13 @@ VALIDATE(){
         exit 1
     fi
 }
+
+dnf install mongodb-org -y 
+validate $? "MongoDB installation"
+
+systemctl enable mongod 
+systemctl start mongod 
+validate $? "MongoDB service"
+
+systemctl restart mongod
+validate $? "MongoDB service restart"
