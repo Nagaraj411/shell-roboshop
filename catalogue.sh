@@ -98,6 +98,9 @@ else
     echo -e "Data is already loaded ... $Y SKIPPING $N"
 fi
 
+mongosh --host mongodb.devops84.shop
+VALIDATE $? "MongoDB connection"
+
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
 
