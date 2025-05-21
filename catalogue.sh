@@ -83,7 +83,7 @@ cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 dnf install mongodb-mongosh -y
 VALIDATE $? "mongodb installation"
 
-mongosh --host MONGODB-SERVER-IPADDRESS </app/db/master-data.js
+mongosh --host mongodb.devops84.shop </app/db/master-data.js
 VALIDATE $? "mongodb data import"
 
 END_TIME=$(date +%s)
