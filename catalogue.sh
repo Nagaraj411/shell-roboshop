@@ -34,13 +34,13 @@ VALIDATE(){
     fi
 }
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y    &>>$LOG_FILE
 VALIDATE $? "NodeJS module disable"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y  &>>$LOG_FILE
 VALIDATE $? "NodeJS module enable"
 
-dnf install nodejs -y
+dnf install nodejs -y   &>>$LOG_FILE
 VALIDATE $? "NodeJS installation"
 
 # check if the roboshop user is already created or not
@@ -56,37 +56,37 @@ fi
 mkdir -p /app
 VALIDATE $? "app folder creation"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 VALIDATE $? "catalogue zip file download"
 
 rm -rf /app/* #remove all the files in app folder
 cd /app       #go to app folder
-unzip /tmp/catalogue.zip
+unzip /tmp/catalogue.zip    &>>$LOG_FILE
 VALIDATE $? "catalogue zip file extraction"
 
-npm install
+npm install &>>$LOG_FILE
 VALIDATE $? "npm install"
 
 cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Copying catalogue service"
 
-systemctl daemon-reload
+systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "systemd daemon reload"
 
-systemctl enable catalogue
+systemctl enable catalogue  &>>$LOG_FILE
 VALIDATE $? "catalogue service enable"
 
-systemctl start catalogue
+systemctl start catalogue   &>>$LOG_FILE
 VALIDATE $? "catalogue service start"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo 
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y  &>>$LOG_FILE
 VALIDATE $? "mongodb installation"
 
-mongosh --host mongodb.devops84.shop </app/db/master-data.js
+mongosh --host mongodb.devops84.shop </app/db/master-data.js    &>>$LOG_FILE
 VALIDATE $? "mongodb data import"
 
-mongosh --host mongodb.devops84.shop
+mongosh --host mongodb.devops84.shop    &>>$LOG_FILE
 VALIDATE $? "mongodb connection"
 
 END_TIME=$(date +%s)
