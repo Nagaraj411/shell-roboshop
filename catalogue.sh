@@ -86,6 +86,9 @@ VALIDATE $? "mongodb installation"
 mongosh --host mongodb.devops84.shop </app/db/master-data.js
 VALIDATE $? "mongodb data import"
 
+mongosh --host MONGODB-SERVER-IPADDRESS
+VALIDATE $? "mongodb connection"
+
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
 
