@@ -32,12 +32,20 @@ VALIDATE(){
     fi
 }
 
+cp mongo.repo /etc/yum.repos.d/mongo.repo
+VALIDATE $? "MongoDB repo file copy"
+
 dnf install mongodb-org -y 
 validate $? "MongoDB installation"
 
 systemctl enable mongod 
+VALIDATE $? "MongoDB service enable"
+
 systemctl start mongod 
-validate $? "MongoDB service"
+VALIDATE $? "MongoDB service start"
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+VALIDATE $? "MongoDB config file update"
 
 systemctl restart mongod
-validate $? "MongoDB service restart"
+VALIDATE $? "MongoDB service restart"
