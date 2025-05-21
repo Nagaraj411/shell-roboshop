@@ -33,25 +33,13 @@ VALIDATE(){
     fi
 }
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOG_FILE
-VALIDATE $? "MongoDB repo file copy"
+dnf module disable nodejs -y
+VALIDATE $? "NodeJS module disable"
 
-dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "MongoDB installation"
+dnf module enable nodejs:20 -y
+VALIDATE $? "NodeJS module enable"
 
-systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "MongoDB service enable"
+dnf install nodejs -y
+VALIDATE $? "NodeJS installation"
 
-systemctl start mongod &>>$LOG_FILE
-VALIDATE $? "MongoDB service start"
-
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "MongoDB config file update"
-
-systemctl restart mongod &>>$LOG_FILE
-VALIDATE $? "MongoDB service restart"
-
-END_TIME=$(date +%s)
-TOTAL_TIME=$(( $END_TIME - $START_TIME ))
-
-echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
