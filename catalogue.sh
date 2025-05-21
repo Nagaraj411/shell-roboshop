@@ -56,8 +56,14 @@ fi
 mkdir -p /app
 VALIDATE $? "app folder creation"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
-VALIDATE $? "catalogue zip file download"
+id roboshop
+if [ $? -ne 0 ]
+then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+    VALIDATE $? "Creating roboshop system user"
+else
+    echo -e "System user roboshop already created ... $Y SKIPPING $N"
+fi
 
 rm -rf /app/* #remove all the files in app folder
 cd /app       #go to app folder
@@ -80,11 +86,17 @@ systemctl start catalogue   &>>$LOG_FILE
 VALIDATE $? "catalogue service start"
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo 
-dnf install mongodb-mongosh -y      
+dnf install mongodb-mongosh -y  &>>$LOG_FILE    
 VALIDATE $? "mongodb installation"
 
-mongosh --host mongodb.devops84.shop    &>>$LOG_FILE
-VALIDATE $? "mongodb connection"
+STATUS=$(mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+if [ $STATUS -lt 0 ]
+then
+    mongosh --host mongodb.daws84s.site </app/db/master-data.js &>>$LOG_FILE
+    VALIDATE $? "Loading data into MongoDB"
+else
+    echo -e "Data is already loaded ... $Y SKIPPING $N"
+fi
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
