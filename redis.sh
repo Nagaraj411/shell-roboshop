@@ -50,7 +50,7 @@ systemctl enable redis  &>>$LOG_FILE
 VALIDATE $? "Redis service enable"
 
 systemctl start redis   &>>$LOG_FILE
-VALIDATE @? "Redis service start"       
+VALIDATE $? "Redis service start"       
 
 
 END_TIME=$(date +%s)
