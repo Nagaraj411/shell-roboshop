@@ -59,3 +59,20 @@ VALIDATE $? "Unzipping payment.zip"
 
 pip3 install -r requirements.txt &>>$LOG_FILE
 VALIDATE $? "Installing python dependencies"
+
+cp &scripts/payment.service /etc/systemd/system/payment.service &>>$LOG_FILE
+VALIDATE $? "Copying payment.service file"
+
+systemctl daemon-reload &>>$LOG_FILE
+VALIDATE $? "Systemd daemon reload"
+
+systemctl enable payment &>>$LOG_FILE
+VALIDATE $? "Enabling payment service"
+
+systemctl start payment &>>$LOG_FILE
+VALIDATE $? "Starting payment service"
+
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+
+echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
