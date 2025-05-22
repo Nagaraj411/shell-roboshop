@@ -21,7 +21,7 @@ do
     fi
     echo "$instance IP address: $IP"
 
-    # Create or update the Route 53 record set using UPSERT
+    # UPSERT Create or update the Route 53 record set using UPSERT
     
     aws route53 change-resource-record-sets \
     --hosted-zone-id $ZONE_ID \
