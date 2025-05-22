@@ -33,6 +33,7 @@ VALIDATE(){
     fi
 }
 
+
 dnf module disable redis -y &>>$LOG_FILE
 VALIDATE $? "Disabling Default Redis version"
 
