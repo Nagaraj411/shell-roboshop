@@ -60,7 +60,7 @@ VALIDATE $? "Unzipping payment.zip"
 pip3 install -r requirements.txt &>>$LOG_FILE
 VALIDATE $? "Installing python dependencies"
 
-cp &scripts/payment.service /etc/systemd/system/payment.service &>>$LOG_FILE
+cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service &>>$LOG_FILE
 VALIDATE $? "Copying payment.service file"
 
 systemctl daemon-reload &>>$LOG_FILE
