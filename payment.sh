@@ -67,10 +67,10 @@ systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "Systemd daemon reload"
 
 systemctl enable payment &>>$LOG_FILE
-VALIDATE $? "Enabling payment service"
+VALIDATE $? "Enable payment"
 
 systemctl start payment &>>$LOG_FILE
-VALIDATE $? "Starting payment service"
+VALIDATE $? "Starting payment"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
