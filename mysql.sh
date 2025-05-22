@@ -24,7 +24,7 @@ else
 fi
 
 echo "Please enter root password to setup"
-read -s MYSQL_ROOT_PASSWORD  #to secure the file, it will not show the password while typing
+read -s MYSQL_ROOT_PASSWORD
 
 # validate functions takes input as exit status, what command they tried to install
 VALIDATE(){
@@ -37,17 +37,17 @@ VALIDATE(){
     fi
 }
 
-dnf install mysql-server -y    &>>$LOG_FILE
-VALIDATE $? "MySQL installation"
+dnf install mysql-server -y &>>$LOG_FILE
+VALIDATE $? "Installing MySQL server"
 
-systemctl enable mysqld  &>>$LOG_FILE
-VALIDATE $? "MySQL service enable"
+systemctl enable mysqld &>>$LOG_FILE
+VALIDATE $? "Enabling MySQL"
 
 systemctl start mysqld   &>>$LOG_FILE
-VALIDATE $? "MySQL service start"
+VALIDATE $? "Starting MySQL"
 
 mysql_secure_installation --set-root-pass $MYSQL_ROOT_PASSWORD &>>$LOG_FILE
-VALIDATE $? "MySQL secure installation"
+VALIDATE $? "Setting MySQL root password"
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
