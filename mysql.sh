@@ -40,10 +40,10 @@ VALIDATE(){
 dnf install mysql-server -y &>>$LOG_FILE
 VALIDATE $? "Installing MySQL server"
 
-systemctl enable mysql  &>>$LOG_FILE
+systemctl enable mysqld  &>>$LOG_FILE
 VALIDATE $? "Enabling MySQL"
 
-systemctl start mysql   &>>$LOG_FILE
+systemctl start mysqld   &>>$LOG_FILE
 VALIDATE $? "Starting MySQL"
 
 mysql_secure_installation --set-root-pass $MYSQL_ROOT_PASSWORD &>>$LOG_FILE
