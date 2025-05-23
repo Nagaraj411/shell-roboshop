@@ -53,3 +53,15 @@ END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
 
 echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
+
+
+systemctl
+    if [ $? -eq 0 ]
+    then
+        echo "MySQL is Successfully running"
+    else
+        echo "MySQL Failed to start"
+        tail -f /var/log/mysqld.log # Check the MySQL log for errors
+        echo "Please check the log file for more details"
+        exit 1
+    fi
