@@ -23,8 +23,8 @@ else
     echo "You are running with root access" | tee -a $LOG_FILE
 fi
 
-echo "Please enter root password to setup"
-read -s MYSQL_ROOT_PASSWORD  #to secure the file, it will not show the password while typing
+echo "Please enter rabbitmq password to setup"
+read -s RABBITMQ_PASSWD    #enter password in hidden format roboshop123
 
 # validate functions takes input as exit status, what command they tried to install
 VALIDATE(){
